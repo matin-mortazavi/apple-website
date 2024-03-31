@@ -1,5 +1,13 @@
+import { Highlights, Navbar, Hero } from "@/components";
+
 const App = () => {
-  return <div className="App">dsa</div>;
+  return (
+    <main className="bg-black">
+      <Navbar />
+      <Hero />
+      <Highlights />
+    </main>
+  );
 };
 
 export default App;

@@ -3,15 +3,21 @@ import gsap from "gsap";
 import React from "react";
 import { rightImg, watchImg } from "@/utils";
 import { VideoCarousel } from "@/components";
+import { ScrollTrigger } from "gsap/all";
 
 const Highlights = () => {
+  gsap.registerPlugin(ScrollTrigger);
+
   useGSAP(() => {
     gsap.to("#highlight-title", {
       opacity: 1,
       duration: 1,
       y: 0,
+      scrollTrigger: "#highlight-title",
     });
     gsap.to(".link", {
+      scrollTrigger: "#highlight-title",
+
       opacity: 1,
       y: 0,
       duration: 1,

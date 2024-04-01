@@ -55,6 +55,7 @@ const VideoCarousel = () => {
 
   const changeSlideHandler = (i) => () => {
     videoRef.current[videoId].pause();
+    videoRef.current[videoId].currentTime = 0;
 
     gsap.to(progressBarRef.current[videoId], {
       backgroundColor: "#afafaf",

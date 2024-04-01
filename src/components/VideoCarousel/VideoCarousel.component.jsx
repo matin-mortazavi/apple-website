@@ -53,6 +53,20 @@ const VideoCarousel = () => {
   const onControlBtnClick = () =>
     isLastVideo ? handleProccess("videoReset") : handleProccess("playAndPause");
 
+  const changeSlideHandler = (i) => () => {
+    videoRef.current[videoId].pause();
+
+    gsap.to(progressBarRef.current[videoId], {
+      backgroundColor: "#afafaf",
+      width: 0,
+    });
+    gsap.to(progressBarWrapperRef.current[videoId], {
+      width: 12,
+    });
+
+    setVideo((prev) => ({ ...prev, videoId: i }));
+  };
+
   gsap.registerPlugin(ScrollTrigger);
   useGSAP(() => {
     gsap.to("#slider", {
@@ -86,24 +100,26 @@ const VideoCarousel = () => {
     if (progressBar[videoId]) {
       let animation = gsap.to(progressBar[videoId], {
         onUpdate: () => {
-          const progress = Math.ceil(animation.progress() * 100);
+          if (!videoRef.current[videoId].paused) {
+            const progress = Math.ceil(animation.progress() * 100);
 
-          if (progress !== currentProgress) {
-            currentProgress = progress;
+            if (progress !== currentProgress) {
+              currentProgress = progress;
 
-            gsap.to(progressBarWrapperRef.current[videoId], {
-              width:
-                window.innerWidth < 760
-                  ? "10vw"
-                  : window.innerWidth < 1200
-                  ? "10vw"
-                  : "4vw",
-            });
+              gsap.to(progressBarWrapperRef.current[videoId], {
+                width:
+                  window.innerWidth < 760
+                    ? "10vw"
+                    : window.innerWidth < 1200
+                    ? "10vw"
+                    : "4vw",
+              });
 
-            gsap.to(progressBar[videoId], {
-              width: `${currentProgress}%`,
-              backgroundColor: "white",
-            });
+              gsap.to(progressBar[videoId], {
+                width: `${currentProgress}%`,
+                backgroundColor: "white",
+              });
+            }
           }
         },
 
@@ -172,6 +188,7 @@ const VideoCarousel = () => {
               ref={(el) => (progressBarWrapperRef.current[i] = el)}
               className="mx-2 w-3 h-3 bg-gray-200 rounded-full cursor-pointer relative"
               key={i}
+              onClick={changeSlideHandler(i)}
             >
               <span
                 ref={(el) => (progressBarRef.current[i] = el)}
